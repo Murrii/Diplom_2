@@ -22,13 +22,11 @@ class TestRegister:
         new_user = RegisterMethods()
         # создаем уникального пользователя
         new_user.register_new_user()
-        # пытаемся создать пользователя с такими же данными
+        # пытаемся создать пользователя с теми же данными еще раз
         status_code, json = new_user.register_new_user()
         assert status_code == 403 and json["message"] == NOT_UNIC_USER
-        # удаляем созданного пользователя перед завершением теста
-        UserMethods(new_user.access_token).delete_user()
 
-    @allure.title("Создание пользователя с незаполненным обязательным полем")
+    @allure.title("Создание пользователя с незаполненным обязательным полем (параметризация)")
     @pytest.mark.parametrize("not_valid_payload", [{"email": "ktrof_00001@yandex.ru", "password": "ktrof_00001@yandex.ru"},
                                                    {"email": "ktrof_00001@yandex.ru", "name": "ktrof_00001@yandex.ru"},
                                                    {"password": "ktrof_00001@yandex.ru","name": "ktrof_00001@yandex.ru"}])

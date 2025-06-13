@@ -19,7 +19,6 @@ class RegisterMethods:
         self.password = generated_register_data
         self.name = generated_register_data
         self.access_token = None
-        self.refresh_token = None
 
         # для удобства обращения сохраняем url как атрибут
         self.url = BASE_URL+REGISTER_URL
@@ -38,11 +37,10 @@ class RegisterMethods:
             payload_data = self.register_payload
         # отправляем пост-запрос на регистрацию
         response = requests.post(url=self.url, data=payload_data)
-        # если юзер успешно создан, сохраняем токены зарегистрированного пользователя для дальнейшей работы с ними
+        # если юзер успешно создан, сохраняем access_token для дальнейшей работы
         # например, для удаления пользователя при завершении теста
         if response.status_code == 200:
             self.access_token = response.json()["accessToken"]
-            self.refresh_token = response.json()["refreshToken"]
         # возвращаем статус-код и текст ответа для дальнейших проверок
         return response.status_code, response.json()
 
