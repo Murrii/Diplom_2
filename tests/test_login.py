@@ -1,22 +1,21 @@
 from methods.login_methods import LoginMethods
-from methods.logout_methods import LogoutMethods
-from data import LOGIN_ERROR_NOT_VALID_DATA
+from methods.user_methods import UserMethods
+from data import LOGIN_ERROR_NOT_VALID_DATA, LOGIN_DATA_WRONG_EMAIL, LOGIN_DATA_WRONG_PASS
 import allure
 import pytest
 
 
 class TestLogin:
     @allure.title("Логин под существующим пользователем")
-    def test_login_with_valid_data_status_code_200(self):
-        user = LoginMethods()
-        status_code, json = user.login()
+    def test_login_with_valid_data_status_code_200(self, user):
+        login_user = LoginMethods(user.user_data_payload)
+        status_code, json = login_user.login()
         assert status_code == 200 and json["success"] == True
-        LogoutMethods().logout(user.refresh_token)
+        UserMethods.delete_user(user.access_token)
 
     @allure.title("Логин с неверным логином/паролем (параметризация)")
-    @pytest.mark.parametrize("wrong_logout_data", [{"email": "666_ktrof_002@yandex.ru", "password": "ktrof_002"},
-                                                   {"email": "ktrof_002@yandex.ru", "password": "666_ktrof_002"}])
+    @pytest.mark.parametrize("wrong_logout_data", [LOGIN_DATA_WRONG_EMAIL, LOGIN_DATA_WRONG_PASS])
     def test_login_with_wrong_data_status_code_401(self, wrong_logout_data):
-        user = LoginMethods()
-        status_code, json = user.login(wrong_logout_data)
+        user = LoginMethods(wrong_logout_data)
+        status_code, json = user.login()
         assert status_code == 401 and json["message"] == LOGIN_ERROR_NOT_VALID_DATA

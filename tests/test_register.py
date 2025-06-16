@@ -15,7 +15,7 @@ class TestRegister:
         # проверяем, что статус код 200 и сохранен тот емейл, который мы передали
         assert status_code == 200 and json["user"]["email"] == new_user.email
         # удаляем созданного пользователя перед завершением теста
-        UserMethods(new_user.access_token).delete_user()
+        UserMethods(new_user.access_token, new_user.refresh_token).delete_user()
 
     @allure.title("Создание не уникального пользователя")
     def test_create_not_unic_user_status_code_403(self):
@@ -25,6 +25,7 @@ class TestRegister:
         # пытаемся создать пользователя с теми же данными еще раз
         status_code, json = new_user.register_new_user()
         assert status_code == 403 and json["message"] == NOT_UNIC_USER
+        UserMethods(new_user.access_token, new_user.refresh_token).delete_user()
 
     @allure.title("Создание пользователя с незаполненным обязательным полем (параметризация)")
     @pytest.mark.parametrize("not_valid_payload", [{"email": "ktrof_00001@yandex.ru", "password": "ktrof_00001@yandex.ru"},
