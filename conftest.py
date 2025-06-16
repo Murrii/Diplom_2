@@ -1,7 +1,5 @@
 import allure
-
 from methods.register_methods import RegisterMethods
-from methods.user_methods import UserMethods
 import pytest
 
 
