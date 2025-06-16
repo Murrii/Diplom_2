@@ -11,7 +11,7 @@ class TestLogin:
         login_user = LoginMethods(user.user_data_payload)
         status_code, json = login_user.login()
         assert status_code == 200 and json["success"] == True
-        UserMethods.delete_user(user.access_token)
+        UserMethods(login_user.access_token).delete_user()
 
     @allure.title("Логин с неверным логином/паролем (параметризация)")
     @pytest.mark.parametrize("wrong_logout_data", [LOGIN_DATA_WRONG_EMAIL, LOGIN_DATA_WRONG_PASS])
