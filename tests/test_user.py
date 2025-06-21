@@ -11,7 +11,6 @@ class TestUser:
         test_user = UserMethods(user.access_token)
         status_code, json = test_user.change_user_with_auth({change_param: CHANGE_DATA})
         assert status_code == 200 and json["success"] == True, print(status_code, json)
-        test_user.delete_user()
 
     @allure.title("Изменение параметров не авторизированного пользователя (Параметризация)")
     @pytest.mark.parametrize("change_param", ["email", "password", "name"])
@@ -19,7 +18,3 @@ class TestUser:
         test_user = UserMethods(user.access_token)
         status_code, json = test_user.change_user_without_auth({change_param: CHANGE_DATA})
         assert status_code == 401 and json["message"] == USER_NOT_AUTH_CHANGE, print(status_code, json)
-        test_user.delete_user()
-
-
-

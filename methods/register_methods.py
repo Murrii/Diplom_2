@@ -12,9 +12,9 @@ class RegisterMethods:
         random_string = ''.join(random.choice(letters) for i in range(length))
         return random_string
 
-    def __init__(self):
+    def __init__(self, fixture_generate_register_data):
         # чтобы уменьшить количество генераций, генерируем одну строку и вставляем ее во все обязательные параметры
-        generated_register_data = "ktrof_" + self.generate_string(5)+"@yandex.ru"
+        generated_register_data = fixture_generate_register_data
         self.email = generated_register_data
         self.password = generated_register_data
         self.name = generated_register_data

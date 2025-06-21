@@ -1,6 +1,5 @@
 import allure
 import pytest
-
 from methods.order_methods import OrderMethods
 from data import INGREDIENT_BUN_ID as BUN, INGREDIENT_MAIN_ID as MAIN, INGREDIENT_SAUCE_ID as SAUCE
 from data import INGREDIENT_WRONG_ID as WRONG_ID, CREATE_ORDER_WITH_WRONG_INGREDIENT_ID, CREATE_ORDER_WITHOUT_INGREDIENTS
@@ -38,16 +37,16 @@ class TestOrders:
 
     @allure.title("Получение списка заказов авторизированного пользователя")
     def test_get_order_list_with_auth_status_code_200(self):
-            # получаем свежий токен в атрибутах объекта для пользователя из data
-            login_user = LoginMethods(USER_WITH_ORDERS_DATA)
-            login_user.login()
-            # отправляем запрос списка заказов для пользователя из data
-            status_code, json = OrderMethods().get_orders_list_with_auth(login_user.access_token)
-            assert status_code == 200 and json["success"], print(json)
+        # получаем свежий токен в атрибутах объекта для пользователя из data
+        login_user = LoginMethods(USER_WITH_ORDERS_DATA)
+        login_user.login()
+        # отправляем запрос списка заказов для пользователя из data
+        status_code, json = OrderMethods().get_orders_list_with_auth(login_user.access_token)
+        assert status_code == 200 and json["success"], print(json)
 
     @allure.title("Получение списка заказов не авторизированного пользователя")
     def test_get_order_list_without_auth_status_code_200(self):
-            # отправляем запрос списка заказов без авторизации
-            orders = OrderMethods()
-            status_code, json = orders.get_orders_list_without_auth()
-            assert status_code == 401 and json["message"] == GET_ORDER_LIST_WITHOUT_AUTH, print(json)
+        # отправляем запрос списка заказов без авторизации
+        orders = OrderMethods()
+        status_code, json = orders.get_orders_list_without_auth()
+        assert status_code == 401 and json["message"] == GET_ORDER_LIST_WITHOUT_AUTH, print(json)
